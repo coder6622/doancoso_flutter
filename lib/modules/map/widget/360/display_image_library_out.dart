@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
+import 'package:student_app/modules/map/widget/360/display_image_library_in.dart';
+
 
 class Image360 extends StatefulWidget {
   const Image360({Key? key}) : super(key: key);
@@ -63,7 +65,7 @@ class _Image360State extends State<Image360> {
     return Scaffold(
         body: Center(
       child: Panorama(
-        animSpeed: 1.0,
+        animSpeed: 0.0,
         sensitivity: 4.0,
         sensorControl: SensorControl.None,
         onViewChanged: onViewChanged,
@@ -78,31 +80,18 @@ class _Image360State extends State<Image360> {
         child: Image.asset('assets/images/library/Thuvien0.jpg'),
         hotspots: [
           Hotspot(
-            latitude: -15.0,
-            longitude: -129.0,
+            latitude: 10.0,
+            longitude: -65,
             width: 90,
             height: 75,
             widget: hotspotButton(
-                text: "Next scene",
+                text: "Đi vào",
                 icon: Icons.open_in_browser,
-                onPressed: () => setState(() => _panoId++)),
-          ),
-          Hotspot(
-            latitude: -42.0,
-            longitude: -46.0,
-            width: 60.0,
-            height: 60.0,
-            widget: hotspotButton(
-                icon: Icons.search,
-                onPressed: () => setState(() => _panoId = 2)),
-          ),
-          Hotspot(
-            latitude: -33.0,
-            longitude: 123.0,
-            width: 60.0,
-            height: 60.0,
-            widget: hotspotButton(icon: Icons.arrow_upward, onPressed: () {}),
-          ),
+                onPressed: () => setState(() => Navigator.of(context).push(MaterialPageRoute(
+                builder: ((context) => const ImageLibrary()))),
+          ),))
+        
+          
         ],
       ),
     ));

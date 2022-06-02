@@ -3,7 +3,7 @@ import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/config/themes/app_text_styles.dart';
 import 'package:student_app/model/map/list_building.dart';
 import 'package:student_app/modules/map/screen/body_sheet.dart';
-import 'package:student_app/modules/map/widget/360/display_image.dart';
+import 'package:student_app/modules/map/widget/360/display_image_library_out.dart';
 import 'package:student_app/modules/map/widget/map/draw_marker.dart';
 // import 'package:student_app/modules/map/widget/map/marker.dart';
 import 'package:student_app/modules/map/widget/map/theme_map.dart';
