@@ -90,10 +90,6 @@ class _BodySheetState extends State<BodySheet> {
               child: Column(
                 children: [
                   const TextAbout(),
-                  const SizedBox(
-                    height: 8,
-                  ),
-
                   BuildingAction.buildingSelected.listPhoto.length > 1
                       ? const PhotoSlide()
                       : const SizedBox(),

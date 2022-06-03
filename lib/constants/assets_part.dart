@@ -4,40 +4,16 @@ const String assets = 'assets/';
 
 class DataAssets {
   static const String dataPath = 'assets/data/';
-  static const String infoSchool = dataPath + 'info_school/';
-  static const String shop = dataPath + 'shop/';
   static const String building = dataPath + 'map/building.json';
 
   static const String info_dang_uy = dataPath + 'info_dang_uy.json';
   static const String info_ban_giam_hieu = dataPath + 'info_ban_giam_hieu.json';
   static const String option1 = dataPath + 'option1.json';
   static const String map = dataPath + 'data_map.json';
-  static const String shop_category = shop + 'shop_category.json';
-  static const String product = shop + 'product.json';
-  static const String post = shop + 'post.json';
-  static const String pattern = shop + 'pattern.json';
-  static const String contact = dataPath + 'contact.json';
-  static const String rangeMoney = dataPath + 'range_money.json';
-  //Job
-  static const String job = dataPath + 'job/';
-  static const String category_job_location =
-      job + 'category_job_location.json';
-  static const String category_job_fields = job + 'category_job_fields.json';
-  static const String category_job_natural = job + 'category_job_natural.json';
-  static const String job_js = job + 'job.json';
-  static const String job_details = job + 'job_details.json';
-
-  //motel
-  static const String hotel = dataPath + 'hotel/';
-  static const String hotelData = hotel + 'data_hotel.json';
-  static const String categoryHotelType = hotel + 'type_hotel.json';
-  static const String categoryHotelCapacity = hotel + 'capacity_hotel.json';
 }
 
 class ImgAssets {
   static const String imagePath = assets + 'images/';
-  static const String shop = imagePath + 'shop/';
-  static const String shopCategory = shop + 'category/';
   static const String imagePath2x = imagePath + '2x/';
   static const String imagePath3x = imagePath + '3x/';
   static const String logo = imagePath + 'app_logo.png';
@@ -75,11 +51,6 @@ class ImgAssets {
   static const String administrators = imagePath + "administrators.png";
   static const String title = imagePath + "login_images/title.png";
   static const String signUp = imagePath + "login_images/SignUp.png";
-  static const String icNew = shopCategory + "ic_new.svg";
-  static const String icTickerTriangle = shop + "tamgiacvadautich.svg";
-  static const String icZalo = shop + "logo_zalo.png";
-  static const String icMess = shop + "logo_mess.png";
-  static const String icPhone = shop + "ic_phone.png";
-  static const String icGmail = shop + "gmail.png";
   static const String logoTruong = imagePath + "logotruong.jpg";
+  static const String logoImage360 = imagePath + "360_degrees.png";
 }

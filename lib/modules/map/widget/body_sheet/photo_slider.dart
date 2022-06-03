@@ -45,7 +45,7 @@ class _PhotoSlideState extends State<PhotoSlide> {
         );
       },
       options: CarouselOptions(
-        height: SizeScreen.sizeSpace * 22,
+        height: SizeScreen.sizeSpace * 21,
         viewportFraction: 1,
         enableInfiniteScroll: false,
         onPageChanged: (index, reason) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
+import 'package:student_app/config/themes/app_colors.dart';
+import 'package:student_app/config/themes/app_text_styles.dart';
 import 'package:student_app/modules/map/widget/360/display_image_library_in.dart';
-
+import 'package:student_app/service/size_screen.dart';
 
 class Image360 extends StatefulWidget {
   const Image360({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class _Image360State extends State<Image360> {
 
   double _tilt = 0;
 
-  int _panoId = 0;
+  final int _panoId = 0;
 
   List<Image> panoImages = [
     Image.asset('assets/images/library/Thuvien0.jpg'),
@@ -63,37 +65,59 @@ class _Image360State extends State<Image360> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Panorama(
-        animSpeed: 0.0,
-        sensitivity: 4.0,
-        sensorControl: SensorControl.None,
-        onViewChanged: onViewChanged,
-        onTap: (longitude, latitude, tilt) =>
-            print('onTap: $longitude, $latitude, $tilt'),
-        onLongPressStart: (longitude, latitude, tilt) =>
-            print('onLongPressStart: $longitude, $latitude, $tilt'),
-        onLongPressMoveUpdate: (longitude, latitude, tilt) =>
-            print('onLongPressMoveUpdate: $longitude, $latitude, $tilt'),
-        onLongPressEnd: (longitude, latitude, tilt) =>
-            print('onLongPressEnd: $longitude, $latitude, $tilt'),
-        child: Image.asset('assets/images/library/Thuvien0.jpg'),
-        hotspots: [
-          Hotspot(
-            latitude: 10.0,
-            longitude: -65,
-            width: 90,
-            height: 75,
-            widget: hotspotButton(
-                text: "Đi vào",
-                icon: Icons.open_in_browser,
-                onPressed: () => setState(() => Navigator.of(context).push(MaterialPageRoute(
-                builder: ((context) => const ImageLibrary()))),
-          ),))
-        
-          
-        ],
+        body: Stack(
+      children: [
+        Center(
+          child: Panorama(
+            animSpeed: 0.0,
+            sensitivity: 4.0,
+            sensorControl: SensorControl.None,
+            onViewChanged: onViewChanged,
+            onTap: (longitude, latitude, tilt) =>
+                print('onTap: $longitude, $latitude, $tilt'),
+            onLongPressStart: (longitude, latitude, tilt) =>
+                print('onLongPressStart: $longitude, $latitude, $tilt'),
+            onLongPressMoveUpdate: (longitude, latitude, tilt) =>
+                print('onLongPressMoveUpdate: $longitude, $latitude, $tilt'),
+            onLongPressEnd: (longitude, latitude, tilt) =>
+                print('onLongPressEnd: $longitude, $latitude, $tilt'),
+            child: Image.asset('assets/images/library/Thuvien0.jpg'),
+            hotspots: [
+              Hotspot(
+                  latitude: 10.0,
+                  longitude: -65,
+                  width: 90,
+                  height: 75,
+                  widget: hotspotButton(
+                    text: "Đi vào",
+                    icon: Icons.open_in_browser,
+                    onPressed: () => setState(
+                      () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: ((context) => const ImageLibrary()))),
+                    ),
+                  ))
+            ],
+          ),
       ),
+        Positioned(
+          bottom: SizeScreen.sizeSpace * 2.5,
+          right: SizeScreen.sizeSpace * 2.5,
+          child: FloatingActionButton.extended(
+            icon: const Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.greyBlur,
+            ),
+            backgroundColor: Colors.white,
+            label: Text(
+              'Thoat',
+              style: AppTextStyles.h5.copyWith(color: AppColors.greyBlur),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        )
+      ],
     ));
   }
 }
