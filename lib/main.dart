@@ -10,6 +10,7 @@ import 'package:firebase_database/ui/firebase_sorted_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/constants/constant.dart';
 import 'package:student_app/model/map/direction.dart';
@@ -24,6 +25,8 @@ import 'service/size_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp();
 
   if (USE_EMULATOR) {
