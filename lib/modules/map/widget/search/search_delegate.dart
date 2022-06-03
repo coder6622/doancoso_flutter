@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:student_app/config/themes/app_colors.dart';
@@ -8,14 +7,17 @@ import 'package:student_app/model/map/list_building.dart';
 import 'package:student_app/model/map/list_room.dart';
 import 'package:student_app/model/map/log_search.dart';
 import 'package:student_app/modules/map/widget/common_used/text_item.dart';
-import 'package:student_app/modules/map/widget/map/draw_map.dart';
+import 'package:student_app/modules/map/widget/map/control_map.dart';
 import 'package:student_app/service/action/map/building_action.dart';
 import 'package:student_app/service/action/map/search_log_action.dart';
-
 import 'package:student_app/service/action/map/search_recent.dart';
 import 'dart:developer' as devtools show log;
 
 class BuildingSearchDelegate extends SearchDelegate<String> {
+  /// type 1: search normal
+  /// type 2: search source location to direct
+  int typeSearch;
+  BuildingSearchDelegate({required this.typeSearch});
   List<String> searchResultsBuildings =
       ListBuildings.listBuildings.map((e) => e.name).toList();
   List<String> searchResultRooms = Rooms.rooms.map((e) => e.nameRoom).toList();
@@ -23,6 +25,7 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
   List<String> suggestionsNow = [];
   List<SearchLog> searchLog = SearchLogAction.actions;
   String idBuildingSelected = '';
+
   @override
   TextInputType? get keyboardType => super.keyboardType;
 
@@ -47,10 +50,13 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    String itemFirst = suggestionsNow[0];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleWhenSearchRight(context, itemFirst);
+    });
     return StatefulBuilder(builder: (context, setState) {
       FocusScope.of(context).unfocus();
       if (suggestionsNow.isNotEmpty) {
-        String itemFirst = suggestionsNow[0];
         setState(
           () {
             idBuildingSelected = searchLog
@@ -63,7 +69,23 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
                 .first;
           },
         );
-        handleWhenSearchRight(context, itemFirst);
+        if (typeSearch == 2) {
+          setState(() {
+            var position = BuildingAction.buildingSelected.geo;
+            BuildingAction.sourceLocation =
+                LatLng(position.latitude, position.longitude);
+          });
+        }
+        // WidgetsBinding.instance.((_) {
+        //   handleWhenSearchRight(context, itemFirst);
+        // });
+
+        // handleWhenSearchRight(context, itemFirst);
+
+        // Future.delayed(const Duration(seconds: 2),
+        //     () => handleWhenSearchRight(context, itemFirst));
+        // handleWhenSearchRight(context, itemFirst);
+        return const Center();
       }
       return const Center(
         child: Text(
@@ -74,6 +96,35 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
     });
   }
 
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    suggestionsRecent = SearchRecent.searchRecent.toList();
+    List<String> searchResult =
+        searchLog.map((element) => element.name ?? '').toList();
+    suggestionsNow = searchResult.where((searchResult) {
+      final result = searchResult.toLowerCase();
+      final input = query.toLowerCase();
+      return result.contains(input);
+    }).toList();
+    return query.isEmpty
+        ? buildSuggestionsUI(
+            context,
+            suggestionsRecent.isEmpty ? suggestionsNow : suggestionsRecent,
+            const Icon(
+              Icons.query_builder_rounded,
+              color: AppColors.mainColor,
+            ),
+          )
+        : buildSuggestionsUI(
+            context,
+            suggestionsNow,
+            const Icon(
+              Icons.business_outlined,
+              color: AppColors.mainColor,
+            ),
+          );
+  }
+
   Widget buildNoSuggestions() => Center(
         child: Text(
           'No suggestions!',
@@ -81,25 +132,31 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
         ),
       );
 
-  Future<void> closeSearch(BuildContext context) async {
+  void closeSearch(BuildContext context) async {
     Navigator.of(context).pop();
   }
 
-  void handleWhenSearchRight(BuildContext context, String suggestion) async {
-    FocusScope.of(context).unfocus();
-    SearchRecent.searchRecent.add(suggestion);
-    query = suggestion;
-    showResults(context);
+  void handleWhenSearchRight(
+    BuildContext context,
+    String result,
+  ) {
+    // Your Code Here
+    // FocusScope.of(context).unfocus();
+    query = result;
     closeSearch(context);
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        GoogleMapScreen
-            .markers[MarkerId(BuildingAction.buildingSelected.id.toString())]
-            ?.onTap
-            ?.call();
-      },
-    );
+    SearchRecent.searchRecent.add(result);
+    // Navigator.of(context).pop();
+    if (typeSearch == 1) {
+      Future.delayed(
+        const Duration(milliseconds: 200),
+        () {
+          ControlMap
+              .markers[MarkerId(BuildingAction.buildingSelected.id.toString())]
+              ?.onTap
+              ?.call();
+        },
+      );
+    }
   }
 
   Widget buildSuggestionsUI(
@@ -160,7 +217,17 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
                           devtools.log("name building action" +
                               BuildingAction.buildingSelected.name);
                         });
-                        handleWhenSearchRight(context, suggestion);
+                        if (typeSearch == 2) {
+                          setState(() {
+                            var position = BuildingAction.buildingSelected.geo;
+                            BuildingAction.sourceLocation =
+                                LatLng(position.latitude, position.longitude);
+                          });
+                        }
+                        handleWhenSearchRight(
+                          context,
+                          suggestion,
+                        );
                       },
                     ),
                   );
@@ -168,34 +235,5 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
               );
       },
     );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    suggestionsRecent = SearchRecent.searchRecent.toList();
-    List<String> searchResult =
-        searchLog.map((element) => element.name ?? '').toList();
-    suggestionsNow = searchResult.where((searchResult) {
-      final result = searchResult.toLowerCase();
-      final input = query.toLowerCase();
-      return result.contains(input);
-    }).toList();
-    return query.isEmpty
-        ? buildSuggestionsUI(
-            context,
-            suggestionsRecent.isEmpty ? suggestionsNow : suggestionsRecent,
-            const Icon(
-              Icons.query_builder_rounded,
-              color: AppColors.mainColor,
-            ),
-          )
-        : buildSuggestionsUI(
-            context,
-            suggestionsNow,
-            const Icon(
-              Icons.business_outlined,
-              color: AppColors.mainColor,
-            ),
-          );
   }
 }

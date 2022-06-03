@@ -4,7 +4,7 @@ import 'package:student_app/config/themes/app_text_styles.dart';
 import 'package:student_app/modules/map/screen/description_page.dart';
 import 'package:student_app/modules/map/screen/overview_page.dart';
 import 'package:student_app/modules/map/screen/photos_page.dart';
-import 'package:student_app/modules/map/widget/map/draw_map.dart';
+import 'package:student_app/modules/map/widget/map/control_map.dart';
 import 'package:student_app/service/action/map/building_action.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +39,9 @@ class _InformationPageState extends State<InformationPage> {
       );
 
   void exitPage() {
-    GoogleMapScreen.isFirstPress = true;
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    GoogleMapScreen.animateToLocation(
+    ControlMap().animateToLocation(
       0,
       LatLng(
         BuildingAction.buildingSelected.geo.latitude,

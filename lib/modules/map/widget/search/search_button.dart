@@ -24,13 +24,15 @@ class _SearchBoxButtonState extends State<SearchBoxButton> {
           right: SizeScreen.sizeSpace * 1.5, left: SizeScreen.sizeSpace / 2),
       child: OutlinedButton(
         onPressed: () {
-          final result = showSearch(
+          showSearch(
             context: context,
-            delegate: BuildingSearchDelegate(),
+            delegate: BuildingSearchDelegate(typeSearch: 1),
             useRootNavigator: false,
           );
 
-          devtools.log('Result: $result');
+          //  Navigator.of(context, rootNavigator: useRootNavigator).push(_SearchPageRoute<T>(
+          //   delegate: delegate,
+          // ));
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),

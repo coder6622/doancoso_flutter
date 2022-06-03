@@ -2,11 +2,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:student_app/config/themes/app_text_styles.dart';
 import 'package:student_app/modules/map/screen/information_page.dart';
 import 'package:student_app/modules/map/widget/body_sheet/photo_slider.dart';
 import 'package:student_app/modules/map/widget/body_sheet/text_about.dart';
-import 'package:student_app/modules/map/widget/map/draw_map.dart';
+import 'package:student_app/modules/map/widget/direction_control/popup_dialog.dart';
+import 'package:student_app/modules/map/widget/map/control_map.dart';
 import 'package:student_app/service/action/map/building_action.dart';
 import 'package:student_app/service/size_screen.dart';
 
@@ -23,9 +23,8 @@ class _BodySheetState extends State<BodySheet> {
   }
 
   void exitPage() {
-    GoogleMapScreen.isFirstPress = true;
     Navigator.of(context).pop();
-    GoogleMapScreen.animateToLocation(
+    ControlMap().animateToLocation(
       0,
       LatLng(
         BuildingAction.buildingSelected.geo.latitude,
@@ -71,7 +70,7 @@ class _BodySheetState extends State<BodySheet> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        primary: AppColors.mainColor,
+                        primary: Colors.deepOrange,
                       ),
                       onPressed: () {
                         exitPage();
@@ -102,26 +101,59 @@ class _BodySheetState extends State<BodySheet> {
                     height: 8,
                   ),
 
-                  ///button show more
-                  ElevatedButton(
-                    child: const Text('Show more'),
-                    style: ElevatedButton.styleFrom(
-                        shape: const StadiumBorder(),
-                        primary: AppColors.mainColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        textStyle: AppTextStyles.h3),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeftWithFade,
-                          curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 400),
-                          child: const InformationPage(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: FloatingActionButton.extended(
+                          label: const Text('Chỉ đường'), // <-- Text
+                          backgroundColor: AppColors.blue,
+                          icon: Icon(
+                            // <-- Icon
+                            Icons.directions,
+                            size: SizeScreen.sizeIcon,
+                          ),
+                          onPressed: () async {
+                            exitPage();
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const SimpleDialogChooseTypeInputSource(),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      SizedBox(
+                        width: SizeScreen.sizeSpace * 3,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: FloatingActionButton.extended(
+                          label: const Text('Xem thông tin'), // <-- Text
+                          backgroundColor: AppColors.orangeryYellow,
+                          icon: Icon(
+                            // <-- Icon
+                            Icons.more,
+                            size: SizeScreen.sizeIcon,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                curve: Curves.easeIn,
+                                duration: const Duration(milliseconds: 400),
+                                child: const InformationPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
+
+                  ///button show more
                   const SizedBox(
                     height: 12,
                   ),

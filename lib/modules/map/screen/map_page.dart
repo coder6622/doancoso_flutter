@@ -53,6 +53,7 @@ class _MapPageState extends State<MapPage> {
   bool hideMarker = false;
   @override
   Widget build(BuildContext context) {
+    // WidgetsFlutterBinding.ensureInitialized();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.lightGreen,

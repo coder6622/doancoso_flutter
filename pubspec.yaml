@@ -64,6 +64,7 @@ dependencies:
   panorama: ^0.4.1
   dio: ^4.0.6
   flutter_polyline_points: ^1.0.0
+  geolocator: ^8.2.1
 
 
 dev_dependencies:
@@ -86,23 +87,6 @@ flutter:
     - assets/images/2x/
     - assets/images/3x/
     - assets/images/login_images/
-    - assets/images/shop/category/
-    - assets/images/shop/product/product1/
-    - assets/images/shop/product/product2/
-    - assets/images/shop/product/product3/
-    - assets/images/shop/product/product4/
-    - assets/images/shop/product/product5/
-    - assets/images/shop/product/product6/
-    - assets/images/shop/product/product7/
-    - assets/images/shop/product/product8/
-    - assets/images/shop/product/product9/
-    - assets/images/shop/product/product10/
-    - assets/images/shop/product/product11/
-    - assets/images/shop/product/product12/
-    - assets/images/shop/product/product13/
-    - assets/images/shop/product/product14/
-    - assets/images/shop/product/product15/
-    - assets/images/shop/product/product16/
     - assets/images/map/A1/
     - assets/images/map/A2/
     - assets/images/map/A3/
