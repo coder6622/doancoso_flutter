@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:student_app/modules/map/screen/body_sheet.dart';
-import 'package:student_app/modules/map/widget/polyline/directions.dart';
 
 class ControlMap {
   static GoogleMapController? mapController;
   static Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  static Directions? info;
 
   Future<void> animateToLocation(
       int delay, LatLng newlatlang, double zoom) async {
@@ -46,18 +44,4 @@ class ControlMap {
         )))
         .then((value) => _showModal(context));
   }
-
-  // void getPolylineDirection() async {
-  //   if (BuildingAction.sourceLocation != null &&
-  //       BuildingAction.destinationLocation != null) {
-  //     final directions = await DirectionsRepository(dio: Dio()).getDirections(
-  //         origin: BuildingAction.sourceLocation!,
-  //         destination: BuildingAction.destinationLocation!);
-  //     ControlMap.info = directions;
-  //   } else {
-  //     return;
-  //   }
-  // }
-
-  void getPolylineDirection() async {}
 }

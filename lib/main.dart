@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/constants/constant.dart';
+import 'package:student_app/model/map/direction.dart';
 import 'package:student_app/widgets/stateless/error_page.dart';
 import 'config/routes/router.dart';
 import 'config/routes/routes.dart';
@@ -51,20 +52,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: StringApp.nameApp,
-      theme: ThemeData(
-          // primaryColor: AppColors.lightGreen,
-          // backgroundColor: AppColors.lightGreen,
-          // scaffoldBackgroundColor: AppColors.lightGreen,
-          // accentColor: AppColors.lightGreen,
-          ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DirectionPolyline>(
+          create: (_) => DirectionPolyline(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: StringApp.nameApp,
+        theme: ThemeData(
+            // primaryColor: AppColors.lightGreen,
+            // backgroundColor: AppColors.lightGreen,
+            // scaffoldBackgroundColor: AppColors.lightGreen,
+            // accentColor: AppColors.lightGreen,
+            ),
 
-      initialRoute: TEST ? Routes.testScreen : Routes.welcomePage,
-      onGenerateRoute: Routers.generatedRoute,
-      //    initialRoute: Routes.welcomePage,
-      // onGenerateRoute: Routers.generatedRoute,
+        initialRoute: TEST ? Routes.testScreen : Routes.welcomePage,
+        onGenerateRoute: Routers.generatedRoute,
+        //    initialRoute: Routes.welcomePage,
+        // onGenerateRoute: Routers.generatedRoute,
+      ),
     );
   }
 }

@@ -1,13 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:provider/provider.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/config/themes/app_text_styles.dart';
+import 'package:student_app/model/map/direction.dart';
 import 'package:student_app/model/map/list_building.dart';
 import 'package:student_app/modules/map/widget/current_location/get_geo_current.dart';
 import 'package:student_app/modules/map/widget/map/control_map.dart';
 import 'package:student_app/modules/map/widget/map/draw_marker.dart';
 import 'package:student_app/modules/map/widget/map/theme_map.dart';
-import 'package:student_app/modules/map/widget/polyline/directions_repository.dart';
 import 'package:student_app/service/action/map/building_action.dart';
 import 'package:student_app/service/size_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class GoogleMapScreen extends StatefulWidget {
       : super(key: key);
   @override
   State<GoogleMapScreen> createState() => _GoogleMapScreenState();
+  static GlobalKey globalKeyDirectButton = GlobalKey();
 }
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
@@ -37,7 +38,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   String _currentTextMapType = 'Statelite view';
   Icon _isZoomIcon = const Icon(Icons.zoom_in_map_sharp);
   bool _isZoomedCheck = false;
-  Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   late PointLatLng source;
@@ -126,262 +126,215 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     });
   }
 
-  void createPolyines() {
-    if (ControlMap.info != null) {
-      var polylineID = const PolylineId('overview');
-      var polyline = Polyline(
-        polylineId: polylineID,
-        color: Colors.red,
-        width: 10,
-        points: ControlMap.info!.polylinePoints!
-            .map((e) => LatLng(e.latitude, e.longitude))
-            .toList(),
-      );
-
-      polylines[polylineID] = polyline;
-    }
-  }
-
-  void clearPolylines() {
-    polylines.clear();
-  }
-
   @override
   Widget build(
     BuildContext context,
   ) {
-    return Stack(children: [
-      GoogleMap(
-          mapType: _currentMapType,
-          onMapCreated: _onMapCreated,
-          onCameraMove: (CameraPosition position) {
-            currentCameraPosition =
-                LatLng(position.target.latitude, position.target.longitude);
-          },
-          padding: EdgeInsets.only(bottom: SizeScreen.sizeBox * 1.7),
-          mapToolbarEnabled: false,
-          zoomGesturesEnabled: true,
-          tiltGesturesEnabled: false,
-          zoomControlsEnabled: false,
-          indoorViewEnabled: false,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          initialCameraPosition: CameraPosition(
-            target:
-                LatLng(buildings[0].geo.latitude, buildings[0].geo.longitude),
-            zoom: 18,
-          ),
-          markers: widget.hideMarkers
-              ? {}
-              : Set<Marker>.of(ControlMap.markers.values),
-          polylines: Set<Polyline>.of(polylines.values),
-          // polylines: _polyline,
-          onTap: (LatLng value) async {
-            final MarkerId markerId =
-                MarkerId(BuildingAction.buildingSelected.id);
-            final BitmapDescriptor icon = await createCustomMarkerBitmap(
-                BuildingAction.buildingSelected.name.toString(),
-                textStyle: AppTextStyles.h2.copyWith(color: Colors.white),
-                backgroundColor: AppColors.orangeryYellow);
-            if (markerFlag != '') {
-              setState(() {
-                ControlMap.markers.update(
-                    markerId, (value) => value.copyWith(iconParam: icon));
-                markerFlag = '';
-              });
-            }
-            devtools.log(value.toString());
-          }),
-
-      /// hien thi thong tin cua duong di
-      if (ControlMap.info != null)
-        Positioned(
-          top: SizeScreen.sizeSpace,
-          left: 0,
-          right: 0,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.only(left: SizeScreen.sizeSpace * 2),
-              decoration: BoxDecoration(
-                color: Colors.yellowAccent,
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 6.0,
-                  )
-                ],
+    return Consumer<DirectionPolyline>(
+      builder: ((context, value, child) {
+        return Stack(children: [
+          GoogleMap(
+              mapType: _currentMapType,
+              onMapCreated: _onMapCreated,
+              onCameraMove: (CameraPosition position) {
+                currentCameraPosition =
+                    LatLng(position.target.latitude, position.target.longitude);
+              },
+              padding: EdgeInsets.only(bottom: SizeScreen.sizeBox * 1.7),
+              mapToolbarEnabled: false,
+              zoomGesturesEnabled: true,
+              tiltGesturesEnabled: false,
+              zoomControlsEnabled: false,
+              indoorViewEnabled: false,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                    buildings[0].geo.latitude, buildings[0].geo.longitude),
+                zoom: 18,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    flex: 5,
-                    fit: FlexFit.loose,
-                    child: Text(
-                        '${ControlMap.info!.totalDistance}, ${ControlMap.info!.totalDuration}',
-                        style: AppTextStyles.h3
-                            .copyWith(fontWeight: FontWeight.w600)),
+              markers: widget.hideMarkers
+                  ? {}
+                  : Set<Marker>.of(ControlMap.markers.values),
+              polylines: Set<Polyline>.of(value.polylines.values),
+              // polylines: _polyline,
+              onTap: (LatLng value) async {
+                final MarkerId markerId =
+                    MarkerId(BuildingAction.buildingSelected.id);
+                final BitmapDescriptor icon = await createCustomMarkerBitmap(
+                    BuildingAction.buildingSelected.name.toString(),
+                    textStyle: AppTextStyles.h2.copyWith(color: Colors.white),
+                    backgroundColor: AppColors.orangeryYellow);
+                if (markerFlag != '') {
+                  setState(() {
+                    ControlMap.markers.update(
+                        markerId, (value) => value.copyWith(iconParam: icon));
+                    markerFlag = '';
+                  });
+                }
+                devtools.log(value.toString());
+              }),
+
+          /// hien thi thong tin cua duong di
+          if (value.info != null)
+            Positioned(
+              top: SizeScreen.sizeSpace,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.only(left: SizeScreen.sizeSpace * 2),
+                  decoration: BoxDecoration(
+                    color: Colors.yellowAccent,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 2),
+                        blurRadius: 6.0,
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    width: SizeScreen.sizeSpace,
-                  ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.loose,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        color: Colors.black,
-                        size: SizeScreen.sizeIcon,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 5,
+                        fit: FlexFit.loose,
+                        child: Text(
+                            '${value.info!.totalDistance}, ${value.info!.totalDuration}',
+                            style: AppTextStyles.h3
+                                .copyWith(fontWeight: FontWeight.w600)),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          BuildingAction.sourceLocation = null;
-                          BuildingAction.destinationLocation = null;
-                          ControlMap.info = null;
-                          clearPolylines();
-                          ControlMap().animateToLocation(
-                              200, currentCameraPosition, 17);
-                        });
-                      },
-                    ),
-                  )
-                ],
+                      SizedBox(
+                        width: SizeScreen.sizeSpace,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.loose,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.black,
+                            size: SizeScreen.sizeIcon,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              BuildingAction.sourceLocation = null;
+                              BuildingAction.destinationLocation = null;
+                              value.info = null;
+                              value.clearPolylines();
+                              ControlMap().animateToLocation(
+                                  200, currentCameraPosition, 17);
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
 
-      /// nut chi duong tam
-      Positioned(
-        bottom: SizeScreen.sizeBox * 6 + SizeScreen.sizeSpace,
-        right: SizeScreen.sizeSpace * 2,
-        child: MaterialButton(
-          shape: const CircleBorder(),
-          color: Colors.white,
-          padding: const EdgeInsets.all(12),
-          onPressed: () async {
-            ControlMap().animateToLocation(
-              200,
-              BuildingAction.sourceLocation!,
-              18,
-            );
-            final directions = await DirectionsRepository(dio: Dio())
-                .getDirections(
-                    origin: BuildingAction.sourceLocation!,
-                    destination: BuildingAction.destinationLocation!);
-            setState(() {
-              ControlMap.info = directions;
-              createPolyines();
-            });
-            // final directions = await DirectionsRepository(dio: Dio())
-            //     .getDirections(
-            //         origin: BuildingAction.sourceLocation!,
-            //         destination: BuildingAction.destinationLocation!);
-            // setState(() => ControlMap.info = directions!);
-          },
-          child: const Icon(Icons.gps_fixed, color: Colors.red),
-        ),
-      ),
+          //nut  dinh vi
+          Positioned(
+            bottom: SizeScreen.sizeBox * 4,
+            right: SizeScreen.sizeSpace * 1.5,
+            child: MaterialButton(
+              shape: const CircleBorder(),
+              color: Colors.white,
+              padding: const EdgeInsets.all(12),
+              onPressed: () async {
+                var positionCurrent =
+                    await GeoLocation().getGeoLocationPosition();
+                setState(() {
+                  BuildingAction.sourceLocation = LatLng(
+                      positionCurrent.latitude, positionCurrent.longitude);
+                  const MarkerId markerId = MarkerId('vi tri hien tai');
+                  // creating a new MARKER
+                  final Marker marker = Marker(
+                    markerId: markerId,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen),
+                    position: LatLng(
+                        positionCurrent.latitude, positionCurrent.longitude),
+                    onTap: () async {},
+                  );
+                  setState(() {
+                    ControlMap.markers[markerId] = marker;
+                  });
 
-      //nut  dinh vi
-      Positioned(
-        bottom: SizeScreen.sizeBox * 4,
-        right: SizeScreen.sizeSpace * 1.5,
-        child: MaterialButton(
-          shape: const CircleBorder(),
-          color: Colors.white,
-          padding: const EdgeInsets.all(12),
-          onPressed: () async {
-            var positionCurrent = await GeoLocation().getGeoLocationPosition();
-            setState(() {
-              BuildingAction.sourceLocation =
-                  LatLng(positionCurrent.latitude, positionCurrent.longitude);
-              const MarkerId markerId = MarkerId('vi tri hien tai');
-              // creating a new MARKER
-              final Marker marker = Marker(
-                markerId: markerId,
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
-                position:
-                    LatLng(positionCurrent.latitude, positionCurrent.longitude),
-                onTap: () async {
-                  devtools.log(polylines.length.toString());
-                },
-              );
-              setState(() {
-                ControlMap.markers[markerId] = marker;
-              });
-
-              ControlMap().animateToLocation(
-                  2,
-                  LatLng(marker.position.latitude, marker.position.longitude),
-                  19);
-            });
-          },
-          child: const Icon(Icons.gps_fixed, color: Colors.red),
-        ),
-      ),
-
-      //nut zoom
-      Positioned(
-        bottom: SizeScreen.sizeBox * 2 + SizeScreen.sizeSpace,
-        right: SizeScreen.sizeSpace * 2,
-        child: MaterialButton(
-          shape: const CircleBorder(),
-          color: Colors.white,
-          padding: const EdgeInsets.all(12),
-          onPressed: () {
-            setState(() {
-              if (_isZoomIcon.icon == Icons.zoom_in_map_sharp) {
-                _isZoomIcon = const Icon(Icons.zoom_out_map_sharp);
-              } else {
-                _isZoomIcon = const Icon(Icons.zoom_in_map_sharp);
-              }
-              _isZoomedCheck = !_isZoomedCheck;
-            });
-            if (_isZoomedCheck) {
-              ControlMap().animateToLocation(0, currentCameraPosition, 22);
-            } else {
-              ControlMap().animateToLocation(0, currentCameraPosition, 18);
-            }
-          },
-          child: _isZoomIcon,
-        ),
-      ),
-
-      //nut chuyen view
-      Positioned(
-        bottom: SizeScreen.sizeSpace * 2.5,
-        right: SizeScreen.sizeSpace * 2.5,
-        child: FloatingActionButton.extended(
-          label: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: AppColors.greyBlur,
-          ),
-          backgroundColor: Colors.white,
-          icon: Text(
-            _currentTextMapType,
-            style: AppTextStyles.h5.copyWith(color: AppColors.greyBlur),
-          ),
-          onPressed: () {
-            setState(
-              () {
-                _currentMapType = (_currentMapType == MapType.normal)
-                    ? MapType.satellite
-                    : MapType.normal;
-                _currentTextMapType = (_currentTextMapType == 'Statelite view')
-                    ? 'Normal view'
-                    : 'Statelite view';
+                  ControlMap().animateToLocation(
+                      2,
+                      LatLng(
+                          marker.position.latitude, marker.position.longitude),
+                      19);
+                });
               },
-            );
-          },
-        ),
-      )
-    ]);
+              child: const Icon(Icons.gps_fixed, color: Colors.red),
+            ),
+          ),
+
+          //nut zoom
+          Positioned(
+            bottom: SizeScreen.sizeBox * 2 + SizeScreen.sizeSpace,
+            right: SizeScreen.sizeSpace * 2,
+            child: MaterialButton(
+              shape: const CircleBorder(),
+              color: Colors.white,
+              padding: const EdgeInsets.all(12),
+              onPressed: () {
+                setState(() {
+                  if (_isZoomIcon.icon == Icons.zoom_in_map_sharp) {
+                    _isZoomIcon = const Icon(Icons.zoom_out_map_sharp);
+                  } else {
+                    _isZoomIcon = const Icon(Icons.zoom_in_map_sharp);
+                  }
+                  _isZoomedCheck = !_isZoomedCheck;
+                });
+                if (_isZoomedCheck) {
+                  ControlMap().animateToLocation(0, currentCameraPosition, 22);
+                } else {
+                  ControlMap().animateToLocation(0, currentCameraPosition, 18);
+                }
+              },
+              child: _isZoomIcon,
+            ),
+          ),
+
+          //nut chuyen view
+          Positioned(
+            bottom: SizeScreen.sizeSpace * 2.5,
+            right: SizeScreen.sizeSpace * 2.5,
+            child: FloatingActionButton.extended(
+              label: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: AppColors.greyBlur,
+              ),
+              backgroundColor: Colors.white,
+              icon: Text(
+                _currentTextMapType,
+                style: AppTextStyles.h5.copyWith(color: AppColors.greyBlur),
+              ),
+              onPressed: () {
+                setState(
+                  () {
+                    _currentMapType = (_currentMapType == MapType.normal)
+                        ? MapType.satellite
+                        : MapType.normal;
+                    _currentTextMapType =
+                        (_currentTextMapType == 'Statelite view')
+                            ? 'Normal view'
+                            : 'Statelite view';
+                  },
+                );
+              },
+            ),
+          )
+        ]);
+      }),
+    );
   }
 }
