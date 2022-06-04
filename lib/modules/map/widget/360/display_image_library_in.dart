@@ -55,8 +55,8 @@ class _ImageLibraryState extends State<ImageLibrary> {
         child: Image.asset('assets/images/library/thuvienTrong.jpg'),
         hotspots: [
           Hotspot(
-            latitude: 10.0,
-            longitude: 0,
+            latitude: -10,
+            longitude: -40,
             width: SizeScreen.sizeBox * 3,
             height: SizeScreen.sizeBox * 2.5,
             widget: CustomHotspot(

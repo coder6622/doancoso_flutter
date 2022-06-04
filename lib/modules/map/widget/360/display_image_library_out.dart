@@ -89,8 +89,8 @@ class _Image360State extends State<Image360> {
             child: Image.asset('assets/images/library/thuvienNgoai.jpg'),
             hotspots: [
               Hotspot(
-                  latitude: 10.0,
-                  longitude: -65,
+                  latitude: 18,
+                  longitude: -88,
                   width: 90,
                   height: SizeScreen.sizeBox * 2.5,
                   widget: CustomHotspot(

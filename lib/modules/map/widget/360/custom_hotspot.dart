@@ -23,6 +23,8 @@ class CustomHotspot extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
+            backgroundColor: AppColors.lightGreen,
+            foregroundColor: AppColors.orangeryYellow,
             child: Icon(icon),
           ),
           SizedBox(

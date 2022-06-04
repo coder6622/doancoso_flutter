@@ -5,10 +5,11 @@ const String assets = 'assets/';
 class DataAssets {
   static const String dataPath = 'assets/data/';
   static const String building = dataPath + 'map/building.json';
+  static const String info_school = dataPath + 'info_school/';
 
-  static const String info_dang_uy = dataPath + 'info_dang_uy.json';
-  static const String info_ban_giam_hieu = dataPath + 'info_ban_giam_hieu.json';
-  static const String option1 = dataPath + 'option1.json';
+  static const String info_dang_uy = info_school + 'info_dang_uy.json';
+  static const String info_ban_giam_hieu = info_school + 'info_ban_giam_hieu.json';
+  static const String option1 = info_school + 'option1_data.json';
   static const String map = dataPath + 'data_map.json';
 }
 
