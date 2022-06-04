@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/config/themes/app_text_styles.dart';
+import 'package:student_app/modules/map/widget/360/custom_hotspot.dart';
 import 'package:student_app/modules/map/widget/360/display_image_library_in.dart';
 import 'package:student_app/service/size_screen.dart';
 
@@ -55,7 +56,11 @@ class _Image360State extends State<Image360> {
                 decoration: const BoxDecoration(
                     color: Colors.black38,
                     borderRadius: BorderRadius.all(Radius.circular(4))),
-                child: Center(child: Text(text)),
+                child: Center(
+                    child: Text(
+                  text,
+                  style: AppTextStyles.h1,
+                )),
               )
             : Container(),
       ],
@@ -81,14 +86,14 @@ class _Image360State extends State<Image360> {
                 print('onLongPressMoveUpdate: $longitude, $latitude, $tilt'),
             onLongPressEnd: (longitude, latitude, tilt) =>
                 print('onLongPressEnd: $longitude, $latitude, $tilt'),
-            child: Image.asset('assets/images/library/Thuvien0.jpg'),
+            child: Image.asset('assets/images/library/thuvienNgoai.jpg'),
             hotspots: [
               Hotspot(
                   latitude: 10.0,
                   longitude: -65,
                   width: 90,
-                  height: 75,
-                  widget: hotspotButton(
+                  height: SizeScreen.sizeBox * 2.5,
+                  widget: CustomHotspot(
                     text: "Đi vào",
                     icon: Icons.open_in_browser,
                     onPressed: () => setState(

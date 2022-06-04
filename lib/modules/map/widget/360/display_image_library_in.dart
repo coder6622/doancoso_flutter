@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
-import 'package:student_app/config/themes/app_text_styles.dart';
+import 'package:student_app/modules/map/widget/360/custom_hotspot.dart';
+import 'package:student_app/service/size_screen.dart';
 
 class ImageLibrary extends StatefulWidget {
   const ImageLibrary({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _ImageLibraryState extends State<ImageLibrary> {
 
   double _tilt = 0;
 
-  int _panoId = 0;
+  final int _panoId = 0;
 
   List<Image> panoImages = [
     
@@ -31,32 +32,6 @@ class _ImageLibraryState extends State<ImageLibrary> {
     });
   }
 
-  Widget hotspotButton(
-      {String? text, IconData? icon, VoidCallback? onPressed}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(const CircleBorder()),
-            backgroundColor: MaterialStateProperty.all(Colors.black38),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-          ),
-          child: Icon(icon),
-          onPressed: onPressed,
-        ),
-        text != null
-            ? Container(
-                padding: const EdgeInsets.all(4.0),
-                decoration: const BoxDecoration(
-                    color: Colors.black38,
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                child: Center(child: Text(text)),
-              )
-            : Container(),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +50,14 @@ class _ImageLibraryState extends State<ImageLibrary> {
             print('onLongPressMoveUpdate: $longitude, $latitude, $tilt'),
         onLongPressEnd: (longitude, latitude, tilt) =>
             print('onLongPressEnd: $longitude, $latitude, $tilt'),
-        child: Image.asset('assets/images/library/Thuvien2.jpg'),
+        child: Image.asset('assets/images/library/thuvienTrong.jpg'),
         hotspots: [
           Hotspot(
             latitude: 10.0,
             longitude: 0,
-            width: 90,
-            height: 75,
-            widget: hotspotButton(
+            width: SizeScreen.sizeBox * 3,
+            height: SizeScreen.sizeBox * 2.5,
+            widget: CustomHotspot(
                 text: "Đi ra",
                 icon: Icons.open_in_browser,
                 onPressed: () => setState(() => Navigator.of(context).pop())),
