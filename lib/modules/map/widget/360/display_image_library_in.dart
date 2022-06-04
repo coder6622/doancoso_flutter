@@ -38,6 +38,8 @@ class _ImageLibraryState extends State<ImageLibrary> {
     return Scaffold(
         body: Center(
       child: Panorama(
+        latSegments: 16,
+        lonSegments: 32,
         animSpeed: 0.0,
         sensitivity: 4.0,
         sensorControl: SensorControl.None,
