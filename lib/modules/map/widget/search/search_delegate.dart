@@ -12,7 +12,6 @@ import 'package:student_app/modules/map/widget/map/control_map.dart';
 import 'package:student_app/service/action/map/building_action.dart';
 import 'package:student_app/service/action/map/search_log_action.dart';
 import 'package:student_app/service/action/map/search_recent.dart';
-import 'dart:developer' as devtools show log;
 
 import '../../../../model/map/direction.dart';
 
@@ -207,12 +206,6 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
                             },
                           ),
                           onTap: () async {
-                            devtools.log("name building action truoc" +
-                                BuildingAction.buildingSelected.name);
-                            devtools.log("length buildings" +
-                                ListBuildings.listBuildings.length.toString());
-                            ListBuildings.mapBuildings.forEach(((key, value) =>
-                                devtools.log("key map" + key)));
                             setState(() {
                               idBuildingSelected = searchLog
                                       .where((element) =>
@@ -220,17 +213,10 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
                                       .first
                                       .idBuilding ??
                                   '';
-                              devtools.log("id selected" + idBuildingSelected);
                               BuildingAction.buildingSelected = ListBuildings
                                       .mapBuildings[idBuildingSelected] ??
                                   ListBuildings.listBuildings[0];
 
-                              devtools.log(ListBuildings
-                                  .mapBuildings[idBuildingSelected]
-                                  .toString());
-
-                              devtools.log("name building action" +
-                                  BuildingAction.buildingSelected.name);
                             });
                             if (typeSearch == 2) {
                               setState(() {

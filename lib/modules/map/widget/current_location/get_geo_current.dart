@@ -33,7 +33,6 @@ class GeoLocation {
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
-      forceAndroidLocationManager: true,
     );
   }
 }

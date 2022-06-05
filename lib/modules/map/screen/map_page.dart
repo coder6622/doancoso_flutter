@@ -6,7 +6,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/model/map/building.dart';
 import 'package:student_app/model/map/list_building.dart';
-import 'package:student_app/model/map/list_room.dart';
 import 'package:student_app/modules/map/widget/map/draw_map.dart';
 import 'package:student_app/modules/map/widget/search/search_button.dart';
 import 'package:student_app/service/action/map/building_action.dart';
@@ -93,13 +92,6 @@ class _MapPageState extends State<MapPage> {
           if (data.hasError) {
             return Text('${data.error}');
           } else if (data.hasData) {
-            for (var item in ListBuildings.listBuildings) {
-              devtools.log(item.name + item.id.toString());
-            }
-            devtools
-                .log("Map building:" + ListBuildings.mapBuildings.toString());
-
-            devtools.log("Map Rooms:" + Rooms.rooms.toString());
             return SafeArea(
 
               child: GoogleMapScreen(

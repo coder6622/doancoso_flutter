@@ -13,7 +13,6 @@ import 'package:student_app/service/size_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:student_app/model/map/building.dart';
-import 'dart:developer' as devtools show log;
 
 @immutable
 class GoogleMapScreen extends StatefulWidget {
@@ -33,7 +32,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   MarkerId idMarkerTapPrev = const MarkerId('');
   String nameMarkerPrev = '';
   late BitmapDescriptor iconTapPrevious;
-  late LatLng currentCameraPosition;
+  late LatLng currentCameraPosition =
+      LatLng(buildings[0].geo.latitude, buildings[0].geo.longitude);
   MapType _currentMapType = MapType.normal;
   String _currentTextMapType = 'Statelite view';
   Icon _isZoomIcon = const Icon(Icons.zoom_in_map_sharp);
@@ -137,8 +137,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
               mapType: _currentMapType,
               onMapCreated: _onMapCreated,
               onCameraMove: (CameraPosition position) {
+                setState(() {
                 currentCameraPosition =
                     LatLng(position.target.latitude, position.target.longitude);
+                });
               },
               padding: EdgeInsets.only(bottom: SizeScreen.sizeBox * 1.7),
               mapToolbarEnabled: false,
@@ -172,7 +174,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     markerFlag = '';
                   });
                 }
-                devtools.log(value.toString());
               }),
 
           /// hien thi thong tin cua duong di
@@ -247,7 +248,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
               color: Colors.white,
               padding: const EdgeInsets.all(12),
               onPressed: () async {
-                ControlMap().animateToLocation(200, currentCameraPosition, 35);
+             
                 var positionCurrent =
                     await GeoLocation().getGeoLocationPosition();
                 setState(() {
