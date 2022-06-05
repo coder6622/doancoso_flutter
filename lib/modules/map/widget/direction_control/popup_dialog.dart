@@ -43,8 +43,7 @@ class _SimpleDialogChooseTypeInputSourceState
         ),
         Consumer<DirectionPolyline>(
           builder: ((context, value, child) {
-            return
-            SimpleDialogItem(
+            return SimpleDialogItem(
               icon: Icons.gps_fixed,
               color: Colors.red,
               text: 'Định vị trí hiện tại',

@@ -247,6 +247,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
               color: Colors.white,
               padding: const EdgeInsets.all(12),
               onPressed: () async {
+                ControlMap().animateToLocation(200, currentCameraPosition, 35);
                 var positionCurrent =
                     await GeoLocation().getGeoLocationPosition();
                 setState(() {

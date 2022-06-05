@@ -55,7 +55,7 @@ class BuildingSearchDelegate extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     if (suggestionsNow.isNotEmpty) {
       String itemFirst = suggestionsNow[0];
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         handleWhenSearchRight(context, itemFirst);
       });
     }
