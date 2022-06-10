@@ -50,6 +50,7 @@ Future emulator() async {
   await FirebaseAuth.instance.useAuthEmulator(host, 9099);
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
