@@ -35,6 +35,7 @@ class Directions {
     // Distance & Duration
     String distance = '';
     String duration = '';
+    devtools.log(data['overview_polyline']['points']);
     if ((data['legs'] as List).isNotEmpty) {
       final leg = data['legs'][0];
       distance = leg['distance']['text'];

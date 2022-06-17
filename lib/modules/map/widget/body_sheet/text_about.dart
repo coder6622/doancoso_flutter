@@ -60,7 +60,7 @@ class TextAbout extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) => const Image360()),
+                      builder: ((context) => const PanoramaLibraryOut()),
                     ),
                   );
                 },

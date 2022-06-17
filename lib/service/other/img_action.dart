@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:student_app/config/string/string_category.dart';
-import 'package:student_app/config/string/string_shop.dart';
 import 'package:uuid/uuid.dart';
 
 class ImgAction {
@@ -74,7 +73,7 @@ class ImgAction {
   }) async {
     String imageName =
         assets.substring(assets.lastIndexOf("/") + 1, assets.lastIndexOf("."));
-    final String name = Uuid().v1();
+    final String name = const Uuid().v1();
     final Directory systemTempDir = Directory.systemTemp;
     final byteData = await rootBundle.load(assets);
     final file = File('${systemTempDir.path}/$imageName');

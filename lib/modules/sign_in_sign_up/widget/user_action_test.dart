@@ -1,8 +1,6 @@
 // ignore_for_file: unused_local_variable, avoid_print
 
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:student_app/service/auth/auth_provider.dart';
 
 class UserAction {
   Future getUser() async {

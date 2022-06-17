@@ -8,7 +8,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyDB-WPVsC2u5hTEXO4aFwBKPvhTAvn6esY"/>
+               android:value="AIzaSyAq-Z7PxJnXmQlBVaS8tgxDwjdCY_PSjk8"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

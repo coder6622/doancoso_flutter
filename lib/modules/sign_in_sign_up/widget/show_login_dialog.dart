@@ -19,7 +19,7 @@ Future<void> showLoginDialog(
           actions: [
             TextButton(
               style:  ButtonStyle(
-               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+               padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(15)),
                backgroundColor: MaterialStateProperty.all<Color>(AppColors.mainColor),
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(

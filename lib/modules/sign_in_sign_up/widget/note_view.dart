@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:student_app/modules/sign_in_sign_up/widget/enums/menu_actions.dart';
 
 import 'package:student_app/config/routes/routes.dart';
-import 'package:student_app/modules/sign_in_sign_up/widget/show_error_dialog.dart';
 import 'package:student_app/modules/sign_in_sign_up/widget/show_login_dialog.dart';
 import 'package:student_app/service/auth/auth_service.dart';
 class NotesView extends StatefulWidget {

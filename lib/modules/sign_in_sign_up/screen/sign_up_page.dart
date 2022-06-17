@@ -10,7 +10,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_app/config/routes/routes.dart';
-import 'package:student_app/modules/home/screen/home_page.dart';
 import 'package:student_app/modules/sign_in_sign_up/widget/show_error_dialog.dart';
 import 'package:student_app/service/auth/auth_exceptions.dart';
 import 'package:student_app/service/auth/auth_service.dart';

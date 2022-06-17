@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:student_app/modules/map/widget/polyline/.env.dart';
 import 'package:student_app/modules/map/widget/polyline/directions.dart';
-
+import 'dart:developer' as devtools show log;
 
 class DirectionsRepository {
   static const String _baseUrl =
@@ -16,7 +16,6 @@ class DirectionsRepository {
     required LatLng origin,
     required LatLng destination,
   }) async {
-
     final response = await _dio.get(
       _baseUrl,
       queryParameters: {
@@ -25,6 +24,8 @@ class DirectionsRepository {
         'key': googleAPIKey,
       },
     );
+
+    devtools.log(response.toString());
 
     // Check if response is successful
     if (response.statusCode == 200) {

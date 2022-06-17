@@ -118,7 +118,7 @@ flutter:
     - assets/images/map/SKNT/
     - assets/images/map/thu_vien/
     - assets/images/map/
-    - assets/images/library/
+    - assets/images/library360/
     - assets/data/
     - assets/data/map/
     - assets/data/info_school/option1_data.json

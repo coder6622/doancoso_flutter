@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:student_app/config/routes/routes.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/config/themes/app_text_styles.dart';
-import 'package:student_app/modules/sign_in_sign_up/screen/sign_in_page.dart';
 
 
-import 'package:student_app/service/auth/auth_service.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -23,10 +21,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   final auth = FirebaseAuth.instance;
   late User user ;
   late Timer timer;
+  @override
   void initState(){
 user = auth.currentUser!;
 user.sendEmailVerification();
-timer=  Timer.periodic(Duration(seconds: 3), (timer) {
+timer=  Timer.periodic(const Duration(seconds: 3), (timer) {
 
   checkEmailVerified();
  });
@@ -73,13 +72,13 @@ final deviceHeight = MediaQuery.of(context).size.height;
                 onPressed: () {
 
                   Navigator.of(context).pushNamedAndRemoveUntil(Routes.signInPage, (route) => false);
-                 } , icon:Icon(Icons.arrow_back) , 
+                 } , icon:const Icon(Icons.arrow_back) , 
                 
                label: Text("Return sign in",
               style: AppTextStyles.h3.copyWith(color:Colors.white )),
               style: ElevatedButton.styleFrom(
               
-                minimumSize: Size.fromHeight(50),
+                minimumSize: const Size.fromHeight(50),
                 primary: AppColors.mainColor
               ),
               ),

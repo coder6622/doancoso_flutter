@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:student_app/config/routes/routes.dart';
 import 'package:student_app/config/themes/app_colors.dart';
 import 'package:student_app/config/themes/app_text_styles.dart';
 import 'package:student_app/modules/sign_in_sign_up/widget/utils.dart';

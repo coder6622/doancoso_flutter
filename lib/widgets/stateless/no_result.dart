@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/config/themes/app_colors.dart';
-import 'package:student_app/service/size_screen.dart';
 
 import '../../config/string/string_app.dart';
 import '../../config/themes/app_text_styles.dart';
@@ -25,14 +23,14 @@ class NoResult extends StatelessWidget {
             ),
           ),
           Container(
-            child: Image(
+            child: const Image(
                 image: AssetImage('assets/images/ic_no_result.png'),
                 width: 240,
                 height: 240),
           ),
           Container(
             padding: const EdgeInsets.only(top: 40),
-            child: Text(
+            child: const Text(
               StringApp.noFoundResult,
               style: AppTextStyles.h4,
               textAlign: TextAlign.center,
@@ -40,7 +38,7 @@ class NoResult extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.only(top: 5),
-            child: Text(
+            child: const Text(
               StringApp.weCantFind,
               style: AppTextStyles.h4,
               textAlign: TextAlign.center,
